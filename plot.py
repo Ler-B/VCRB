@@ -373,7 +373,9 @@ def plot_result_din2(z0, time, l1, values, func_run, l_batch, model):
     ax[1, 0].legend()
     ax[1, 1].legend()
     plt.show()
-    
+
+
+
 def plot_result_din_list(z0, time, l1, values, func_run, metods):
     fl = True
     fig, ax =  plt.subplots(2, 2, figsize = (20, 10))
