@@ -228,6 +228,17 @@ def plot_result1(x_values, y_values, t_values, l1, func_run, mt):
     plt.show()
 
 
+
+
+
+
+
+
+
+
+
+
+
 def plot_result21(x_values, y_values, t_values, l1, func_run):
     fig, ax =  plt.subplots(2, 2, figsize = (20, 10))
     
@@ -307,6 +318,61 @@ def plot_result_din(z0, time, l1, values, func_run):
     ax[1, 0].legend()
     ax[1, 1].legend()
     plt.show()
+
+def plot_result_din2(z0, time, l1, values, func_run, l_batch, model):
+    t = convert_to_tensor(time)
+    true_val = values
+    pred_val = func_run(z0, z0, t, l1, train=False)
+    
+    x_true = true_val[:, 0][:, 0]
+    y_true = true_val[:, 0][:, 1]
+    
+    x_pred = pred_val[:, 0][:, 0]
+    y_pred = pred_val[:, 0][:, 1]
+    
+    # x_true = true_val[:, 0]
+    # y_true = true_val[:, 0]
+    
+    # x_pred = pred_val[:, 0]
+    # y_pred = pred_val[:, 0]
+    
+    
+    
+    list_x = x_true.detach().numpy()
+    list_y = y_true.detach().numpy()
+    list_pred_x = x_pred.detach().numpy()
+    list_pred_y = y_pred.detach().numpy()
+    
+    fig, ax =  plt.subplots(2, 2, figsize = (20, 10))
+    
+    ax[0, 0].plot(list_x, list_y, color = 'g', label = "true function")
+    # ax[0, 1].scatter(list_x, list_y, color = 'g', label = "true function")
+    ax[1, 0].scatter(list_x, list_y, color = 'g', label = "true function")
+    ax[1, 1].scatter(list_x, list_y, color = 'g', label = "true function")
+
+    ax[0, 0].plot(list_pred_x, list_pred_y, label = "pred")
+    ax[0, 1].scatter(list_pred_x, list_pred_y, label = "pred")
+    ax[1, 0].plot(list_pred_x, list_pred_y, label = "pred")
+    
+    for batch in l_batch:
+        samples, targets = batch
+        outputs = model(samples)
+        xx = []
+        yy = []
+        for o in outputs:
+            xx += [o.detach()[0].item()]
+            yy += [o.detach()[1].item()]
+        ax[1, 1].plot(xx, yy)
+    
+    ax[0, 0].set(xlabel='x', ylabel='y')
+    ax[0, 1].set(xlabel='x', ylabel='y')
+    ax[1, 0].set(xlabel='x', ylabel='y')
+    ax[1, 1].set(xlabel='x', ylabel='y')
+    ax[0, 0].legend()
+    ax[0, 1].legend()
+    ax[1, 0].legend()
+    ax[1, 1].legend()
+    plt.show()
     
 def plot_result_din_list(z0, time, l1, values, func_run, metods):
     fl = True
@@ -356,4 +422,3 @@ def plot_result_din_list(z0, time, l1, values, func_run, metods):
     ax[1, 1].legend()
     plt.show()
     
-        
